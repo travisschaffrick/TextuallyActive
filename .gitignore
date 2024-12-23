@@ -1,0 +1,53 @@
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Python bytecode
+*.py[cod]
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Editor and IDE files
+.idea/
+.vscode/
+*.swp
+*~
+
+# Logs and database files
+*.log
+*.sql
+*.sqlite
+
+# Test and coverage files
+.coverage
+.tox/
+.nox/
+.cache/
+pytest_cache/
+htmlcov/
+
+# Environment variable files
+.env
+.env.*
+*.ini
+*.cfg
+
+# XML files (per your original file)
+*.xml
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows system files
+Thumbs.db
+Desktop.ini

@@ -1,65 +1,7 @@
-import pickle
 import os
 import re
-
-
-class Pattern():
-    def __init__(self, beginning: list[str], end: str):
-        self.begins_with: list[str] = beginning
-        self.ends_with: str = end
-        self.occurrences: int = 0
-
-    def __len__(self):
-        return len(self.begins_with)
-
-    def __eq__(self, other):
-        return self.begins_with == other.begins_with and self.ends_with == other.ends_with
-
-    def __str__(self):
-        return f"{self.begins_with} -> {self.ends_with}, {self.occurrences} times"
-
-    def set_begins_with(self, pattern):
-        self.begins_with = pattern
-
-    def set_ends_with(self, pattern):
-        self.ends_with = pattern
-
-    def get_begins_with(self):
-        return self.begins_with
-
-    def get_ends_with(self):
-        return self.ends_with
-
-    def increment_occurrences(self):
-        self.occurrences += 1
-
-
-class Database():
-    def __init__(self):
-        # Loading previous patterns
-        try:
-            with open('patterns.pkl', 'rb') as file:
-                self.data = pickle.load(file)
-        except FileNotFoundError:
-            self.data = []  # Data will be stored {"first word" + "second word", occurrences}
-            print("Database not loaded, created new database")
-
-    def save(self):
-        with open('patterns.pkl', 'wb') as file:
-            pickle.dump(self.data, file)
-            print('Data saved')
-
-    def insert(self, data):
-        self.data.append(data)
-        self.save()
-        return True
-
-    def remove(self, pattern):
-        self.data.remove(pattern)
-        return True
-
-    def all_patterns(self):
-        return self.data
+from pattern import Pattern
+from database import Database
 
 
 def main():
@@ -95,7 +37,7 @@ def main():
                 new_pattern = Pattern(pattern[:-1], pattern[-1])
                 # Check if the pattern already exists in the database
                 existing_pattern = None
-                for stored_pattern in db.data:
+                for stored_pattern in db.all_patterns():
                     if stored_pattern == new_pattern:
                         existing_pattern = stored_pattern
                         break
@@ -118,7 +60,6 @@ def guess_word(db):
     """
     input_words = input("Input some context and I will try to predict the next word: ").lower().split()
     best = ("", 0, 0)  # (most likely word, match score, number of occurrences)
-    print(db.all_patterns())
     for pattern in db.all_patterns():
         if pattern.get_ends_with() == input_words[-1]:
             continue
@@ -127,7 +68,6 @@ def guess_word(db):
 
         if match_score > best[1] or match_score == best[1] and occurrences > best[2]:
             best = (pattern.get_ends_with(), match_score, occurrences)
-            print(best)
     if best[0]:
         print(f'''I predict you'll say "{best[0]}" next''')
     else:
