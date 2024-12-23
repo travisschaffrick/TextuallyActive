@@ -51,3 +51,6 @@ htmlcov/
 # Windows system files
 Thumbs.db
 Desktop.ini
+
+# Other
+patterns.pkl
